@@ -68,7 +68,6 @@ $ch = curl_init($url);
 	}
 }
 
-
 function clear_cookie() {
 	@chmod(SCR_DIR . '/data/cookies.txt', 0777);
 	$fp = fopen(SCR_DIR . '/data/cookies.txt', 'w');
@@ -77,12 +76,19 @@ function clear_cookie() {
 	@chmod(SCR_DIR . '/data/cookies.txt', 0777);
 }
 
-
-function htmlbr_var_dump($var)
+function htmlpre_var_dump($var)
 {
 	echo '<pre>';
 	var_dump($var);
 	echo '</pre>';
+}
+
+function put_error_in_logfile($msg)
+{
+	$msg = '[' . date('Y.m.d H:i:s:u') . ']: ' . $msg . "\n";
+	$fp = fopen(SCR_DIR . '/data/logfile.txt', 'a');
+	fwrite($fp, $msg);
+	fclose($fp);
 }
 
 ?>
