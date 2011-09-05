@@ -21,6 +21,11 @@ if(!function_exists('curl_init'))
 	exit('Not installed curl!');
 }
 
+if(!check_last_post())
+{
+	exit('Already posted!');
+}
+
 $VKCOOKIES = '';
 
 $vk = new vk_auth($VKEMAIL, $VKPWD, $VKPPID, $SLEEPTIME);
@@ -37,6 +42,11 @@ include_once(SCR_DIR . '/weather_get.php');
 if (!$vk->post_to_wall($message)) {
 	exit('Error! Not Posted!');
 }
+else
+{
+	write_last_post();
 
+	echo 'Posted!';
+}
 
 ?>
