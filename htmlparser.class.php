@@ -15,7 +15,8 @@ class HTMLParser {
     function HTMLParser($url)
 	{
         // Получение данных
-		if (function_exists('cURL_get_file'))
+		// TODO: curl-browser!!!!
+		if (function_exists('1cURL_get_file'))
 		{
 			$input = cURL_get_file($url);
 		}
@@ -27,6 +28,11 @@ class HTMLParser {
         // Подготовка полученных данных к обработке
         $this->xml = self::rawToSimpleXML($input);
     }
+
+	public function getWin1251DataFromXPath($xpath)
+	{
+		return iconv('utf-8', 'windows-1251', self::getFromXPath($this->xml->xpath($xpath)));
+	}
 
 	// Получение данных через XPath
 	public function getDataFromXPath($xpath)
@@ -51,8 +57,6 @@ class HTMLParser {
 		/*
 		* Загрузка данных и очистка от ошибок
 		*/
-
-
 		$tidy = new tidy();
 		$tidy->parseString($data, $tidy_config, $tidy_config['output-encoding']);
 		$tidy->cleanRepair();
@@ -61,7 +65,6 @@ class HTMLParser {
 		/*
 		* Инициализация XML DOM
 		*/
-
 		$dom = new DOMDocument();
 		$dom->strictErrorChecking = FALSE;
 		@$dom->loadHTML($tidy_out);
@@ -71,7 +74,6 @@ class HTMLParser {
 		/*
 		* Инициализация SimpleXML
 		*/
-
 		$simpexml = simplexml_import_dom($dom);
 		unset($dom);
 

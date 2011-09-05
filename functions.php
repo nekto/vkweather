@@ -100,4 +100,15 @@ function put_error_in_logfile($msg)
 	fclose($fp);
 }
 
+function format_type_weather($data, $from = 'detail')
+{
+	$data = trim($data);
+	return strtolower(rtrim(substr($data, 0, strpos($data, (($from == 'detail') ? 'Вероятность' : 'Ощущается')))));
+}
+
+function weather_wind_bug($data)
+{
+	return ((empty($data) OR strpos($data, '°')) ? 'не указан' : $data);
+}
+
 ?>
