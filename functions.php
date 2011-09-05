@@ -1,7 +1,7 @@
 <?
 
 function cURL_get_file($url, $post = FALSE, $ref = FALSE, $proxy = FALSE, $proxy_port = FALSE, $proxy_type = FALSE) {
-
+global $VKCOOKIES;
 /*
 $url_a = @explode('#', $url);
 $url = $url_a[0];
@@ -28,8 +28,17 @@ $ch = curl_init($url);
 //	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
 //	curl_setopt($ch, CURLOPT_CAPATH, FALSE);
 
-	curl_setopt($ch, CURLOPT_COOKIEJAR, SCR_DIR . '/data/cookies.txt');
-	curl_setopt($ch, CURLOPT_COOKIEFILE, SCR_DIR . '/data/cookies.txt');
+
+	if (empty($VKCOOKIES))
+	{
+		curl_setopt($ch, CURLOPT_COOKIEJAR, SCR_DIR . '/data/cookies.txt');
+		curl_setopt($ch, CURLOPT_COOKIEFILE, SCR_DIR . '/data/cookies.txt');
+	}
+	else
+	{
+		curl_setopt($ch, CURLOPT_COOKIE, $VKCOOKIES);
+	}
+
 
 	if ($post !== FALSE) {
 		curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -85,7 +94,7 @@ function htmlpre_var_dump($var)
 
 function put_error_in_logfile($msg)
 {
-	$msg = '[' . date('Y.m.d H:i:s:u') . ']: ' . $msg . "\n";
+	$msg = '[' . date('Y.m.d H:i:s') . ']: ' . $msg . "\n";
 	$fp = fopen(SCR_DIR . '/data/logfile.txt', 'a');
 	fwrite($fp, $msg);
 	fclose($fp);

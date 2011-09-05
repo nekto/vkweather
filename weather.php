@@ -19,6 +19,8 @@ if(!function_exists('curl_init'))
 	exit('Not installed curl!');
 }
 
+$VKCOOKIES = '';
+
 $vk = new vk_auth($VKEMAIL, $VKPWD, $VKPPID, $SLEEPTIME);
 
 if(!$vk->check_auth())
@@ -26,5 +28,8 @@ if(!$vk->check_auth())
 	exit('Error! See logfile.');
 }
 
+if (!$vk->post_to_wall("")) {
+	exit('Error! Not Posted!');
+}
 
 ?>

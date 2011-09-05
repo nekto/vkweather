@@ -20,7 +20,7 @@ class vk_auth {
 	public function check_auth()
 	{
 		$hash = $this->get_hash();
-		
+
 		if(empty($hash))
 		{
 			if($this->auth())
@@ -43,8 +43,19 @@ class vk_auth {
 		return TRUE;
 	}
 
+	public function post_to_wall($msg)
+	{
+		if(!$this->post_to_wall_query($msg))
+		{
+			put_error_in_logfile('Message not posted!');
+			return FALSE;
+		}
+		return TRUE;
+	}
+
 	private function auth()
 	{
+		global $VKCOOKIES;
 		clear_cookie();
 
 		$location = $this->get_auth_location();
@@ -53,10 +64,13 @@ class vk_auth {
 			return FALSE;
 		}
 
-		if(!$this->get_auth_cookies($location)){
+		$sid = $this->get_auth_cookies($location);
+		if(!$sid){
 			put_error_in_logfile('vK not authorised!');
 			return FALSE;
 		}
+		// TODO: сделать публичную функцию браузера
+		$VKCOOKIES = 'remixsid=' . $sid . '; path=/; domain=.vkontakte.ru';
 
 		return TRUE;
 	}
@@ -65,6 +79,11 @@ class vk_auth {
 	{
 		$result = cURL_get_file('http://vkontakte.ru/public' . $this->ppid);
 		preg_match('#"post_hash":"(\w+)"#isU', $result, $match);
+
+		if (strpos($result, 'action="https://login.vk.com/?act=login'))
+		{
+			unset($match[1]);
+		}
 
 		$this->sleep();
 		return ((isset($match[1])) ? $match[1] : '');
@@ -100,7 +119,31 @@ class vk_auth {
 		$result = cURL_get_file($location);
 
 		$this->sleep();
-		return ((strpos($result, "setCookieEx('sid', ") === FALSE) ? FALSE : TRUE);
+		return ((strpos($result, "setCookieEx('sid', ") === FALSE) ? FALSE :
+				substr($result, strpos($result, "setCookieEx('sid', '") + 20, 60));
+	}
+
+
+	private function post_to_wall_query($msg)
+	{
+		$post = array(
+			'act' => 'post',
+			'al' => '1',
+			'facebook_export' => '',
+			'friends_only' => '',
+			'hash' => $this->hash,
+			'message' => $msg,
+			'note_title' => '',
+			'official' => '',
+			'status_export' => '',
+			'to_id' => '-' . $this->ppid,
+			'type' => 'all',
+		);
+
+		$result = cURL_get_file('http://vkontakte.ru/al_wall.php', http_build_query($post));
+
+		$this->sleep();
+		return strpos($result, '<!>0<!><input');
 	}
 
 	private function sleep()
