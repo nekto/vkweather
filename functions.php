@@ -1,11 +1,4 @@
 <?
-error_reporting(E_ALL);
-ini_set('display_errors', TRUE);
-@ini_set('memory_limit', '64M');
-@set_time_limit(0);
-@ini_set('max_execution_time',0);
-@ini_set('set_time_limit',0);
-@ob_end_flush();
 
 function cURL_get_file($url, $post = FALSE, $ref = FALSE, $proxy = FALSE, $proxy_port = FALSE, $proxy_type = FALSE) {
 
