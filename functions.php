@@ -16,21 +16,7 @@ $url = $url_a[0];
 
 
 $users = array('Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Zango 10.1.181.0)',
-'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; LTS8; .NET CLR 1.1.4322)',
-'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; FunWebProducts; SV1; .NET CLR 1.0.3705; .NET CLR 1.1.4322)',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 1.1.4322; .NET CLR 2.0.50727; MEGAUPLOAD 2.0)',
-'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2',
-'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; FDM; .NET CLR 1.1.4322)',
-'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AIRF; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 1.0.3705; .NET CLR 1.1.4322; Media Center PC 4.0)',
-'Mozilla/4.0 (compatible; BorderManager 3.0)',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; FunWebProducts; SIMBAR={A2193EC4-2981-4774-BF42-8BD7120D3637})',
-'Mozilla/5.0 (Windows; U; Windows NT 5.1; ru; rv:1.8.1.8) Gecko/20071008 Firefox/2.0.0.8',
-'Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.0.3) Gecko/20060523 Ubuntu/dapper Firefox/1.5.0.3',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.2; WOW64; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30)',
-'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; iebar; InfoPath.2; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30)',
-'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; FunWebProducts; .NET CLR 1.1.4322; MEGAUPLOAD 2.0; .NET CLR 2.0.50727)');
+'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 2.0.50727; .NET CLR 1.1.4322)');
 
 //shuffle($users);
 
@@ -40,7 +26,7 @@ $user = $users[0];
 $ch = curl_init($url);
 	curl_setopt($ch, CURLOPT_HEADER, TRUE);
 	curl_setopt($ch, CURLOPT_NOBODY, FALSE);
-// ���� ��������� �� ��������� �������, �� ���� ��������� safe_mode � open_basedir
+//  safe_mode || open_basedir
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);	// FUCKED!
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 //	curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
@@ -89,9 +75,7 @@ $ch = curl_init($url);
 	}
 }
 
-/*
-������� ��� ������� ����� � ������
-*/
+
 function clear_cookie() {
 	@chmod(SCR_DIR . '/data/cookies.txt', 0777);
 	$fp = fopen(SCR_DIR . '/data/cookies.txt', 'w');

@@ -22,7 +22,7 @@ $post = array(
 	'email' => $VKEMAIL,
 	'expire' => '',
 	'from_host' => 'vkontakte.ru',
-	'ip_h' => isset($matches [1])? $matches [1]: '', // получаем из формы логина
+	'ip_h' => isset($matches [1])? $matches [1]: '',
 	'pass' => $VKPWD,
 	'q' => '1',
 );
