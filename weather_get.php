@@ -1,7 +1,5 @@
 <?php
 
-include_once(SCR_DIR . '/htmlparser.class.php');
-
 $parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY);
 
 $now = array(
@@ -15,6 +13,9 @@ $now = 'Сейчас: ' . implode(', ', $now) . '.';
 unset($parser);
 
 sleep($SLEEPTIME + rand(1,4));
+
+
+
 
 $parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY . '?details=' . date('Y.m.d'));
 
@@ -73,7 +74,5 @@ switch(date('G'))
 		$message .= $evening . "\n" . $night;
 		break;
 }
-
-$message = iconv('utf-8', 'windows-1251', $message);
 
 ?>
