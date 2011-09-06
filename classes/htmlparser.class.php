@@ -14,10 +14,9 @@ class HTMLParser
 	private $minicurl;
 
 
-    function __construct($url, $minicurl)
+    function __construct($url)
 	{
-		$this->minicurl = $minicurl;
-
+		$this->minicurl = new minicurl(FALSE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');;
 
         // Получение данных
 		$input = $this->minicurl->get_file($url);
@@ -26,9 +25,9 @@ class HTMLParser
         $this->xml = self::rawToSimpleXML($input);
     }
 
-	public function getWin1251DataFromXPath($xpath)
+	public function getConvDataFromXPath($xpath)
 	{
-		return iconv('utf-8', 'windows-1251', self::getFromXPath($this->xml->xpath($xpath)));
+		return iconv('UTF-8', 'ISO-8859-1', self::getFromXPath($this->xml->xpath($xpath)));
 	}
 
 	// Получение данных через XPath
@@ -44,7 +43,7 @@ class HTMLParser
         * Конфиг Tidy
         */
 		$tidy_config = array(
-			'input-encoding' => 'utf8',
+			'input-encoding' => 'utf-8',
 			'output-encoding' => 'utf8',
 			'output-xml' => TRUE,
 			'add-xml-decl' => TRUE,
@@ -58,6 +57,7 @@ class HTMLParser
 		$tidy->parseString($data, $tidy_config, $tidy_config['output-encoding']);
 		$tidy->cleanRepair();
 		$tidy_out = $tidy->html()->value;
+		unset($tidy);
 
 		/*
 		* Инициализация XML DOM
@@ -66,16 +66,15 @@ class HTMLParser
 		$dom->strictErrorChecking = FALSE;
 		@$dom->loadHTML($tidy_out);
 
-		unset($tidy);
-
 		/*
 		* Инициализация SimpleXML
 		*/
-		$simpexml = simplexml_import_dom($dom);
+		$simplexml = simplexml_import_dom($dom);
 		unset($dom);
 
-		return $simpexml;
+		return $simplexml;
     }
+
 
     /*
     * Вспомогательная функция для очистки XML

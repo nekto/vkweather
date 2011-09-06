@@ -5,6 +5,7 @@ ini_set('display_errors', TRUE);
 @set_time_limit(0);
 @ini_set('max_execution_time',0);
 @ini_set('set_time_limit',0);
+header('Content-Type: text/html; charset=utf-8'); 
 @ob_end_flush();
 
 
@@ -15,7 +16,14 @@ include_once(SCR_DIR . '/functions.php');
 include_once(SCR_DIR . '/classes/minicurl.class.php');
 include_once(SCR_DIR . '/classes/vk_auth.class.php');
 include_once(SCR_DIR . '/classes/htmlparser.class.php');
-include_once(SCR_DIR . '/classes/parsing_foreca.class.php');
+if($PARSINGFROM == 'foreca')
+{
+	include_once(SCR_DIR . '/classes/parsing_foreca.class.php');
+}
+elseif ($PARSINGFROM == 'gismeteo')
+{
+	include_once(SCR_DIR . '/classes/parsing_gismeteo.class.php');
+}
 
 
 if(!function_exists('curl_init'))
@@ -36,7 +44,7 @@ if(!$vk->check_auth())
 	exit('Error! See logfile.');
 }
 
-$weather = new Foreca($CITY);
+$weather = new WeatherParser($CITY);
 $message = $weather->get_data();
 
 if (!$vk->post_to_wall($message)) {

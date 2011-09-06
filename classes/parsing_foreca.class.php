@@ -1,6 +1,6 @@
 <?
 
-class Foreca
+class WeatherParser
 {
 
 	private $HTMLParser;
@@ -38,8 +38,7 @@ class Foreca
 
 	private function new_parser($url)
 	{
-		$minicurl_wg = new minicurl(FALSE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');
-		$this->HTMLParser = new HTMLParser($url, $minicurl_wg);
+		$this->HTMLParser = new HTMLParser($url);
 	}
 
 	private function weather_bug($data)
