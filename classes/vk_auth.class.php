@@ -11,13 +11,13 @@ class vk_auth
 	private $minicurl;
 
 	
-	function __construct($email, $pwd, $ppid, $sleeptime, $minicurl)
+	function __construct($email, $pwd, $ppid, $sleeptime)
 	{
 		$this->email = $email;
 		$this->pwd = $pwd;
 		$this->ppid = $ppid;
 		$this->sleeptime = $sleeptime;
-		$this->minicurl = $minicurl;
+		$this->minicurl = new minicurl(TRUE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');;
 	}
 
 	public function check_auth()

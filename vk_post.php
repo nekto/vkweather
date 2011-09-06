@@ -23,15 +23,13 @@ if(!function_exists('curl_init'))
 	exit('Not installed curl!');
 }
 
-
 if(!check_last_post())
 {
 	exit('Already posted!');
 }
 
 
-$minicurl_vk = new minicurl(TRUE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');
-$vk = new vk_auth($VKEMAIL, $VKPWD, $VKPPID, $SLEEPTIME, $minicurl_vk);
+$vk = new vk_auth($VKEMAIL, $VKPWD, $VKPPID, $SLEEPTIME);
 
 if(!$vk->check_auth())
 {
