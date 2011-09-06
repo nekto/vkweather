@@ -8,14 +8,16 @@ class vk_auth
 	private $hash = '';
 	private $ppid = '';
 	private $sleeptime = 1;
+	private $minicurl;
 
 	
-	function __construct($email, $pwd, $ppid, $sleeptime)
+	function __construct($email, $pwd, $ppid, $sleeptime, $minicurl)
 	{
 		$this->email = $email;
 		$this->pwd = $pwd;
 		$this->ppid = $ppid;
 		$this->sleeptime = $sleeptime;
+		$this->minicurl = $minicurl;
 	}
 
 	public function check_auth()
@@ -56,8 +58,7 @@ class vk_auth
 
 	private function auth()
 	{
-		global $VKCOOKIES;
-		clear_cookie();
+		$this->minicurl->clear_cookies();
 
 		$location = $this->get_auth_location();
 		if($location === FALSE){
@@ -70,15 +71,15 @@ class vk_auth
 			put_error_in_logfile('vK not authorised!');
 			return FALSE;
 		}
-		// TODO: сделать публичную функцию браузера
-		$VKCOOKIES = 'remixsid=' . $sid . '; path=/; domain=.vkontakte.ru';
+
+		$this->minicurl->set_cookies('remixsid=' . $sid . '; path=/; domain=.vkontakte.ru');
 
 		return TRUE;
 	}
 
 	private function get_hash()
 	{
-		$result = cURL_get_file('http://vkontakte.ru/public' . $this->ppid);
+		$result = $this->minicurl->get_file('http://vkontakte.ru/public' . $this->ppid);
 		preg_match('#"post_hash":"(\w+)"#isU', $result, $match);
 
 		if (strpos($result, 'action="https://login.vk.com/?act=login'))
@@ -92,7 +93,7 @@ class vk_auth
 
 	private function get_auth_location()
 	{
-		$html = cURL_get_file('http://vkontakte.ru/');
+		$html = $this->minicurl->get_file('http://vkontakte.ru/');
 		preg_match('#<input type="hidden" name="ip_h" value="([a-z0-9]*?)" \/>#isU', $html, $matches);
 
 		$post = array(
@@ -108,7 +109,7 @@ class vk_auth
 			'q' => '1',
 		);
 
-		$auth = cURL_get_file('http://login.vk.com/?act=login', http_build_query($post), 'http://vkontakte.ru/');
+		$auth = $this->minicurl->get_file('http://login.vk.com/?act=login', $post, 'http://vkontakte.ru/');
 		preg_match('#Location\: ([^\r\n]+)#is', $auth, $match);
 
 		$this->sleep();
@@ -117,7 +118,7 @@ class vk_auth
 
 	private function get_auth_cookies($location)
 	{
-		$result = cURL_get_file($location);
+		$result = $this->minicurl->get_file($location);
 
 		$this->sleep();
 		return ((strpos($result, "setCookieEx('sid', ") === FALSE) ? FALSE :
@@ -141,7 +142,7 @@ class vk_auth
 			'type' => 'all',
 		);
 
-		$result = cURL_get_file('http://vkontakte.ru/al_wall.php', http_build_query($post));
+		$result = $this->minicurl->get_file('http://vkontakte.ru/al_wall.php', $post);
 
 		$this->sleep();
 		return strpos($result, '<!>0<!><input');

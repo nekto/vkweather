@@ -1,13 +1,5 @@
 <?
 
-function clear_cookie() {
-	@chmod(SCR_DIR . '/data/cookies.txt', 0777);
-	$fp = fopen(SCR_DIR . '/data/cookies.txt', 'w');
-//	fwrite($fp, '');
-	fclose($fp);
-	@chmod(SCR_DIR . '/data/cookies.txt', 0777);
-}
-
 function htmlpre_var_dump($var)
 {
 	echo '<pre>';

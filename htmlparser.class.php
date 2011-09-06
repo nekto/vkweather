@@ -11,20 +11,16 @@ class HTMLParser
 {
 
 	private $xml = '';
+	private $minicurl;
 
 
-    function __construct($url)
+    function __construct($url, $minicurl)
 	{
+		$this->minicurl = $minicurl;
+
+
         // Получение данных
-		// TODO: curl-browser!!!!
-		if (function_exists('1cURL_get_file'))
-		{
-			$input = cURL_get_file($url);
-		}
-		else
-		{
-			$input = file_get_contents($url);
-		}
+		$input = $this->minicurl->get_file($url);
 
         // Подготовка полученных данных к обработке
         $this->xml = self::rawToSimpleXML($input);

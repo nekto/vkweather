@@ -1,6 +1,7 @@
 <?php
 
-$parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY);
+$minicurl_wg = new minicurl(FALSE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');
+$parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY, $minicurl_wg);
 
 $now = array(
 	$parser->getDataFromXPath('/html/body/div/div/div[4]/div/div[2]/div[6]/div/div/div/div/span'),
@@ -17,7 +18,7 @@ sleep($SLEEPTIME + rand(1,4));
 
 
 
-$parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY . '?details=' . date('Y.m.d'));
+$parser = new HTMLParser('http://foreca.ru/Russia/' . $CITY . '?details=' . date('Y.m.d'), $minicurl_wg);
 
 // 7:00
 $morning = array(

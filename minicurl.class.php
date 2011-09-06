@@ -25,20 +25,34 @@ class minicurl
 		$this->user_agent = $user_agent;
 	}
 
-	public function get_file($url, $postfields = FALSE, $referer = FALSE, $cookies = '')
+	public function set_cookies($cookies)
+	{
+		// TODO: скорее всего не будет работать с несколькими куками сразу...
+		if (strpos($this->cookies, $cookies) === FALSE)
+		{
+			$this->cookies .= $cookies;
+		}
+	}
+
+	public function get_file($url, $postfields = FALSE, $referer = FALSE)
 	{
 		$this->referer = $referer;
 		$this->postfields = (is_array($postfields) ? http_build_query($postfields) : $postfields);
-		if (!empty($cookies))
-		{
-			// TODO: скорее всего не будет работать с несколькими куками сразу...
-			if (strpos($this->cookies, $cookies))
-			{
-				$this->cookies .= $cookies;
-			}
-		}
 
 		return $this->cURL_get_file($url);
+	}
+
+	public function clear_cookies()
+	{
+		if(!empty($this->cookies_file))
+		{
+			@chmod($this->cookies_file, 0777);
+			$fp = fopen($this->cookies_file, 'w');
+			fclose($fp);
+			@chmod($this->cookies_file, 0777);
+		}
+
+		$this->cookies = '';
 	}
 
 	private function cURL_get_file($url) 
