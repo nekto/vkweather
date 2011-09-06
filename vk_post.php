@@ -12,9 +12,9 @@ define('SCR_DIR', dirname(__FILE__));
 
 include_once(SCR_DIR . '/config.php');
 include_once(SCR_DIR . '/functions.php');
-include_once(SCR_DIR . '/minicurl.class.php');
-include_once(SCR_DIR . '/vk_auth.class.php');
-include_once(SCR_DIR . '/htmlparser.class.php');
+include_once(SCR_DIR . '/classes/minicurl.class.php');
+include_once(SCR_DIR . '/classes/vk_auth.class.php');
+include_once(SCR_DIR . '/classes/htmlparser.class.php');
 
 
 if(!function_exists('curl_init'))
