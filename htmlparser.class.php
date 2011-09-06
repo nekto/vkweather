@@ -7,12 +7,13 @@
 */
 
 
-class HTMLParser {
+class HTMLParser
+{
 
 	private $xml = '';
 
 
-    function HTMLParser($url)
+    function __construct($url)
 	{
         // Получение данных
 		// TODO: curl-browser!!!!

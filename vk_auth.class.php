@@ -1,6 +1,7 @@
 <?
 
-class vk_auth {
+class vk_auth
+{
 	
 	private $email = '';
 	private $pwd = '';
@@ -9,7 +10,7 @@ class vk_auth {
 	private $sleeptime = 1;
 
 	
-	function vk_auth($email, $pwd, $ppid, $sleeptime)
+	function __construct($email, $pwd, $ppid, $sleeptime)
 	{
 		$this->email = $email;
 		$this->pwd = $pwd;

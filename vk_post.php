@@ -10,8 +10,9 @@ ini_set('display_errors', TRUE);
 
 define('SCR_DIR', dirname(__FILE__));
 
-include_once(SCR_DIR . '/functions.php');
 include_once(SCR_DIR . '/config.php');
+include_once(SCR_DIR . '/functions.php');
+include_once(SCR_DIR . '/minicurl.class.php');
 include_once(SCR_DIR . '/vk_auth.class.php');
 include_once(SCR_DIR . '/htmlparser.class.php');
 
@@ -26,6 +27,7 @@ if(!check_last_post())
 	exit('Already posted!');
 }
 
+/*
 $VKCOOKIES = '';
 
 $vk = new vk_auth($VKEMAIL, $VKPWD, $VKPPID, $SLEEPTIME);
@@ -48,5 +50,10 @@ else
 
 	echo 'Posted!';
 }
+*/
+
+
+//$mc = new minicurl(TRUE, SCR_DIR . '/data/cookies.txt', 'Mozilla/5.0 (Windows NT 6.1; rv:2.0.1) Gecko/20100101 Firefox/4.0.1');
+//htmlpre_var_dump($mc->get_file('http://www.yandex.ru/'))
 
 ?>
