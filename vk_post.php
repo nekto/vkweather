@@ -15,6 +15,7 @@ include_once(SCR_DIR . '/functions.php');
 include_once(SCR_DIR . '/classes/minicurl.class.php');
 include_once(SCR_DIR . '/classes/vk_auth.class.php');
 include_once(SCR_DIR . '/classes/htmlparser.class.php');
+include_once(SCR_DIR . '/classes/parsing_foreca.class.php');
 
 
 if(!function_exists('curl_init'))
@@ -37,8 +38,8 @@ if(!$vk->check_auth())
 	exit('Error! See logfile.');
 }
 
-include_once(SCR_DIR . '/weather_get.php');
-
+$weather = new Foreca($CITY);
+$message = $weather->get_data();
 
 if (!$vk->post_to_wall($message)) {
 	exit('Error! Not Posted!');
