@@ -31,13 +31,13 @@ class vk_auth
 				$hash = $this->get_hash();
 				if (!empty($hash))
 				{
-					put_error_in_logfile('JS-Field "post_hash" not found!');
+					$this->put_error_in_logfile('JS-Field "post_hash" not found!');
 					return FALSE;
 				}
 			}
 			else
 			{
-				put_error_in_logfile('Not authorised!');
+				$this->put_error_in_logfile('Not authorised!');
 				return FALSE;
 			}
 		}
@@ -50,7 +50,7 @@ class vk_auth
 	{
 		if(!$this->post_to_wall_query($msg))
 		{
-			put_error_in_logfile('Message not posted!');
+			$this->put_error_in_logfile('Message not posted!');
 			return FALSE;
 		}
 		return TRUE;
@@ -62,13 +62,13 @@ class vk_auth
 
 		$location = $this->get_auth_location();
 		if($location === FALSE){
-			put_error_in_logfile('vK not return Location!');
+			$this->put_error_in_logfile('vK not return Location!');
 			return FALSE;
 		}
 
 		$sid = $this->get_auth_cookies($location);
 		if(!$sid){
-			put_error_in_logfile('vK not authorised!');
+			$this->put_error_in_logfile('vK not authorised!');
 			return FALSE;
 		}
 
@@ -151,6 +151,14 @@ class vk_auth
 	private function sleep()
 	{
 		sleep($this->sleeptime + rand(1, 4));
+	}
+
+	private function put_error_in_logfile($msg)
+	{
+		$msg = '[' . date('Y.m.d H:i:s') . ']: ' . $msg . "\n";
+		$fp = fopen(SCR_DIR . '/data/logfile.txt', 'a');
+		fwrite($fp, $msg);
+		fclose($fp);
 	}
 }
 
