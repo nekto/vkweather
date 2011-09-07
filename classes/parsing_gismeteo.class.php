@@ -80,7 +80,14 @@ class WeatherParser
 				$this->weather_bug($this->HTMLParser->getConvDataFromXPath(".//*[@id='weather']/div[1]/div/div[4]/dl/dd")),
 			$this->weather_bug($this->HTMLParser->getConvDataFromXPath(".//*[@id='weather']/div[1]/div/div[6]/span"), 'данные получены ')
 		);
-		return 'Сейчас: ' . implode(', ', array_filter($now)) . '.';
+		if (strpos($now[0], 'ет данных за'))
+		{
+			return 'Сейчас: ' . $now[0] . '.';
+		}
+		else
+		{
+			return 'Сейчас: ' . implode(', ', array_filter($now)) . '.';
+		}
 	}
 
 	private function morning_data()
